@@ -46,6 +46,9 @@ export default {
       this._setSliderWidth(true)
     })
   },
+  destroyed() {
+    clearTimeout(this.timer)
+  },
   methods:{
     _setSliderWidth(isResize){
       this.children = this.$refs.sliderGroup.children;

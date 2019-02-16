@@ -26,7 +26,7 @@ export default {};
     font-weight: bold;
     color: $color-text-l;
     letter-spacing: 3px;
-    font-size: $font-size-large-x;
+    font-size: $font-size-large;
     text-align: center;
   }
   .mine {

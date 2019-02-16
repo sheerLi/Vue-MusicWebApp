@@ -10,24 +10,32 @@
         </Slider>  
       </div>
       <div class="recommend-list">
-        <h3>热门歌单</h3>
+        <h3 class="title">热门歌单</h3>
+        <ul>
+          <li v-for="item in discList" :key="item.dissid" class="item"> 
+            <img :src="item.imgurl" alt="" class="icon">
+            <p class="desc">{{ item.dissname }}</p>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </template>
 <script>
-import {getRecommend} from 'api/recommend.js'
+import {getRecommend, getDiscList} from 'api/recommend.js'
 import {ERR_OK} from 'api/config.js'
 import Slider from 'base/slider/slider'
 import BScroll from 'better-scroll'
 export default {
   data(){
     return {
-      recommends:[]
+      recommends:[],
+      discList: []
     }
   },
   created(){
     this._getRecommend();
+    this._getDiscList();
   },
   methods: {
     // 获取轮播图数据
@@ -40,8 +48,14 @@ export default {
           console.log('获取失败');
         }
       })
-    }
-   
+    },
+    _getDiscList() {
+      getDiscList().then((res) => {
+        if(res.code === ERR_OK){
+          this.discList = res.data.list
+        }
+      })
+    } 
   },
   components: {
     Slider
@@ -77,6 +91,37 @@ export default {
         border-radius: 5px;
         box-shadow: 0 1px 1px #3c3c3c;
         overflow: hidden;
+      }
+      .recommend-list{
+        box-sizing: border-box;
+        width: 100%;
+        .title{
+          line-height: 65px;
+          padding-left: 1.5%;
+          font-size: 14px;
+          text-align: left;
+          color: $color-text;
+          font-weight: 700;
+        }
+        .item{
+          display: inline-block;
+          box-sizing: border-box;
+          width: 33%;
+          padding: 1% 1%;
+          .icon{
+            width: 100%;
+            height: 100%;
+            border-radius: 3px;
+          }
+          .desc{
+            float: left;
+            height: 40px;
+            line-height: 16px;
+            text-align: left;
+            font-size: 12px;
+            margin-top: 5px;
+          }
+        }
       }
     }
   }
