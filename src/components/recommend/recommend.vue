@@ -1,30 +1,37 @@
 <template>
   <div class="recommend">
-    <div class="recommend-content">
-      <div class="decorate"></div>
-      <div class="slider-wrapper" ref="sliderWrapper" v-if="recommends.length">
-        <Slider>
-          <div v-for="item in recommends" :key="item.id">
-            <img :src="item.picUrl" alt="">
-          </div>
-        </Slider>  
+    <Scroll ref="scroll" class="recommend-content" :data="discList">
+      <div>
+        <div class="decorate"></div>
+        <div class="slider-wrapper" ref="sliderWrapper" v-if="recommends.length">
+          <Slider>
+            <div v-for="item in recommends" :key="item.id">
+              <img @load="imgLoad" :src="item.picUrl" alt="">
+            </div>
+          </Slider>  
+        </div>
+        <div class="recommend-list">
+          <h3 class="title">热门歌单</h3>
+          <ul>
+            <li v-for="item in discList" :key="item.dissid" class="item"> 
+              <img v-lazy="item.imgurl" alt="" class="icon">
+              <p class="desc">{{ item.dissname }}</p>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="recommend-list">
-        <h3 class="title">热门歌单</h3>
-        <ul>
-          <li v-for="item in discList" :key="item.dissid" class="item"> 
-            <img :src="item.imgurl" alt="" class="icon">
-            <p class="desc">{{ item.dissname }}</p>
-          </li>
-        </ul>
+      <div class="loading-container" v-show="!discList.length">
+        <Loading></Loading>
       </div>
-    </div>
+    </Scroll>
   </div>
 </template>
 <script>
 import {getRecommend, getDiscList} from 'api/recommend.js'
 import {ERR_OK} from 'api/config.js'
+import Scroll from 'base/scroll/scroll'
 import Slider from 'base/slider/slider'
+import Loading from 'base/loading/loading'
 import BScroll from 'better-scroll'
 export default {
   data(){
@@ -55,10 +62,18 @@ export default {
           this.discList = res.data.list
         }
       })
-    } 
+    },
+    imgLoad() {
+      if(!this.checkLoaded){
+        this.$refs.scroll.refresh();
+        this.checkLoaded = true;
+      } 
+    }
   },
   components: {
-    Slider
+    Slider,
+    Scroll,
+    Loading
   }
 }
 </script>
@@ -76,6 +91,12 @@ export default {
       height: 100%;
       overflow: hidden;
       position: relative;
+      .loading-container{
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%)
+      }
       .decorate{
         position: absolute;
         top: 0vh;
@@ -98,7 +119,7 @@ export default {
         .title{
           line-height: 65px;
           padding-left: 1.5%;
-          font-size: 14px;
+          font-size: $font-size-medium;
           text-align: left;
           color: $color-text;
           font-weight: 700;
@@ -107,7 +128,7 @@ export default {
           display: inline-block;
           box-sizing: border-box;
           width: 33%;
-          padding: 1% 1%;
+          padding: 0 1%;
           .icon{
             width: 100%;
             height: 100%;
@@ -118,7 +139,7 @@ export default {
             height: 40px;
             line-height: 16px;
             text-align: left;
-            font-size: 12px;
+            font-size: $font-size-small-x;
             margin-top: 5px;
           }
         }
