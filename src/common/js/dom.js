@@ -14,3 +14,13 @@ function hasClass(el,cname){
   var reg = new RegExp('(^|\\s)'+cname+'(\\s|$)');
   return reg.test(el.className);
 }
+
+export function getData(el, name, val){
+  const prefix = 'data-'
+  name = prefix + name
+  if(val){
+    el.setAttribute(name, val)
+  }else {
+    return el.getAttribute(name)
+  }
+}
