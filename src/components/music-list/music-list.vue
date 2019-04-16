@@ -1,13 +1,15 @@
 <template>
   <div class="music-list">
-    <div class="back" @click="back">
-      <i class="fa fa-angle-left"></i>
+    <div class="header">
+      <div class="back" @click="back">
+        <i class="iconfont icon-back"></i>
+      </div>
+      <h1 class="title" v-html="title"></h1>
     </div>
-    <h1 class="title" v-html="title"></h1>
     <div class="bg-img" :style="bgStyle" ref="bgImg">
       <div class="play-wrapper">
         <div ref="playBtn" v-show="songs.length>0" class="play">
-          <i class="iconfont icon-bofangicon"></i>
+          <i class="iconfont icon-stop icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
       </div>
@@ -23,7 +25,7 @@
       ref="list"
     >
       <div class="song-list-wrapper">
-        <song-list :songs="songs"></song-list>
+        <song-list @select="selectItem" :rank="rank" :songs="songs"></song-list>
       </div>
       <div v-show="!songs.length" class="loading-container">
         <loading></loading>
@@ -37,11 +39,14 @@ import SongList from "base/song-list/song-list";
 import Scroll from "base/scroll/scroll";
 import {prefixStyle} from "common/js/dom";
 import Loading from 'base/loading/loading'
+import {mapActions} from 'vuex'
+import {playlistMixin} from 'common/js/mixin'
 
 const RESERVED_HEIGHT = 40
 const transform = prefixStyle('transform')
 const backdrop = prefixStyle('backdrop-filter')
 export default {
+  mixins: [playlistMixin],
   props: {
     bgImg: {
       type: String,
@@ -54,6 +59,10 @@ export default {
     songs: {
       type: Array,
       default: []
+    },
+    rank: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -105,12 +114,26 @@ export default {
     this.$refs.list.$el.style.top = `${this.imageHeight}px`;
   },
   methods: {
+    handlePlaylist(playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.list.$el.style.bottom = bottom
+      this.$refs.list.refresh()
+    },
     scroll(pos) {
       this.scrollY = pos.y;
     },
     back(){
       this.$router.back()
-    }
+    },
+    selectItem(item, index){
+      this.selectPlay({
+        list: this.songs,
+        index
+      })
+    },
+    ...mapActions([
+      'selectPlay'
+    ])
   },
   components: {
     SongList,
@@ -122,6 +145,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~common/scss/variable.scss";
+@import "~common/scss/mixin.scss";
 .music-list {
   position: fixed;
   z-index: 100;
@@ -130,29 +154,34 @@ export default {
   bottom: 0;
   right: 0;
   background-color: $color-background;
-  .back {
-    position: absolute;
-    left: 6px;
+  .header {
+    position: fixed;
     top: 0;
-    z-index: 50;
-    .fa-angle-left {
-      padding: 5px 10px;
-      font-size: 30px;
-    }
-  }
-  .title {
-    position: absolute;
-    top: 0;
-    left: 10%;
-    z-index: 40;
-    width: 80%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    text-align: center;
-    line-height: 40px;
-    font-size: 18px;
+    width: 100%;
+    height: 44px;
     color: #fff;
+    z-index: 100;
+    .back {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      .icon-back {
+        padding: 5px 10px;
+        font-size: 30px;
+      }
+    }
+    .title {
+      position: absolute;
+      top: 0;
+      left: 10%;
+      z-index: 40;
+      width: 80%;
+      @include no-wrap();
+      text-align: center;
+      line-height: 40px;
+      font-size: 18px;
+      color: #fff;
+    }
   }
   .bg-img {
     position: relative;
@@ -173,8 +202,8 @@ export default {
         padding: 7px 0;
         margin: 0 auto;
         text-align: center;
-        border: 1px solid $color-theme;
-        color: $color-theme;
+        border: 1px solid $color-theme-l;
+        color: $color-theme-l;
         border-radius: 100px;
         font-size: 0;
         .icon-play{
@@ -212,6 +241,26 @@ export default {
     background: #f2f3f4;
     .song-list-wrapper {
       padding: 20px 30px;
+      border-radius: 10px;
+      .sequence-play {
+        position: absolute;
+        // left: 8;
+        top: 0px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 40px;
+        padding-left: 16px;
+        border-bottom: 1px solid rgb(228, 228, 228);
+        .iconfont {
+          font-size: 18px;
+          color: $color-text;
+          padding-right: 14px;
+        }
+        .text {
+          font-size: $font-size-medium-x;
+        }
+      }
     }
     .loading-container{
       position: absolute;

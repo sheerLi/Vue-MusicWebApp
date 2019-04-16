@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
     <Scroll ref="scroll" class="recommend-content" :data="discList">
       <div>
         <div class="decorate"></div>
@@ -13,7 +13,7 @@
         <div class="recommend-list">
           <h3 class="title">热门歌单</h3>
           <ul>
-            <li v-for="item in discList" :key="item.dissid" class="item"> 
+            <li @click="selectItem(item)" v-for="item in discList" :key="item.dissid" class="item"> 
               <img v-lazy="item.imgurl" alt="" class="icon">
               <p class="desc">{{ item.dissname }}</p>
             </li>
@@ -24,6 +24,7 @@
         <Loading></Loading>
       </div>
     </Scroll>
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -33,7 +34,11 @@ import Scroll from 'base/scroll/scroll'
 import Slider from 'base/slider/slider'
 import Loading from 'base/loading/loading'
 import BScroll from 'better-scroll'
+import {mapMutations} from 'vuex'
+import {playlistMixin} from 'common/js/mixin'
+
 export default {
+  mixins: [playlistMixin],
   data(){
     return {
       recommends:[],
@@ -45,6 +50,11 @@ export default {
     this._getDiscList();
   },
   methods: {
+    handlePlaylist(playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+      this.$refs.recommend.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     // 获取轮播图数据
     _getRecommend(){
       getRecommend().then((res) => {
@@ -68,7 +78,16 @@ export default {
         this.$refs.scroll.refresh();
         this.checkLoaded = true;
       } 
-    }
+    },
+    selectItem(item) {
+      this.$router.push({
+        path: `/recommend/${item.dissid}`
+      })
+      this.setDisc(item)
+    },
+    ...mapMutations({
+      setDisc: 'SET_DISC'
+    })
   },
   components: {
     Slider,
