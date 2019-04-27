@@ -23,6 +23,14 @@ export default {
     listenScroll: {
       type: Boolean,
       default: false
+    },
+    pullUp: {
+      type: Boolean,
+      default: false
+    },
+    beforeScroll: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -45,6 +53,18 @@ export default {
         this.scroll.on("scroll", pos => {
           me.$emit("scroll", pos);
         });
+      }
+      if(this.pullUp) {
+        this.scroll.on('scrollEnd', () => {
+          if(this.scroll.y <= (this.scroll.maxScrollY + 50)){
+            this.$emit('scrollToEnd')
+          }
+        })
+      }
+      if(this.beforeScroll) {
+        this.scroll.on('beforeScrollStart', () => {
+          this.$emit('beforeScroll')
+        })
       }
     },
     enable() {
