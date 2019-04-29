@@ -69,7 +69,7 @@
               <i @click="next" class="iconfont icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="iconfont icon-dislike"></i>
+              <i class="iconfont" @click="toggleFavorite(currentSong)" :class="getFavoriteIcon(currentSong)"></i>
             </div>
           </div>
         </div>
@@ -90,10 +90,11 @@
           </progress-circle>
         </div>
         <div class="control">
-          <i class="iconfont icon-list"></i>
+          <i class="iconfont icon-list" @click.stop="showPlaylist"></i>
         </div>
       </div>
     </transition>
+    <play-list ref="playlist"></play-list>
     <audio
       :src="currentSong.url"
       ref="audio"
@@ -106,7 +107,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { mapMutations } from "vuex";
 import { playMode } from "common/js/config";
 import { shuffle } from "common/js/util";
@@ -115,6 +116,7 @@ import Lyric from "lyric-parser";
 import Scroll from "base/scroll/scroll";
 import ProgressBar from "base/progress-bar/progress-bar";
 import ProgressCircle from "base/progress-circle/progress-circle";
+import PlayList from "components/playlist/playlist";
 
 const transform = prefixStyle("transform");
 const transitionDuration = prefixStyle("transitionDuration");
@@ -159,11 +161,15 @@ export default {
       "playing",
       "currentIndex",
       "mode",
-      "sequenceList"
+      "sequenceList",
+      "favoriteList"
     ])
   },
   watch: {
     currentSong(newSong, oldSong) {
+      if(!newSong.id) {
+        return
+      }
       if (newSong.id === oldSong) {
         return;
       }
@@ -198,6 +204,28 @@ export default {
     }
   },
   methods: {
+    getFavoriteIcon(song) {
+      if(this.isFavorite(song)) {
+        return 'icon-like'
+      }
+      return 'icon-dislike'
+    },
+    toggleFavorite(song) {
+      if(this.isFavorite(song)) {
+        this.deleteFavoriteList(song)
+      } else {
+        this.saveFavoriteList(song)
+      }
+    },
+    isFavorite(song) {
+      const index = this.favoriteList.findIndex((item) => {
+        return item.id === song.id
+      })
+      return index > -1
+    },
+    showPlaylist() {
+      this.$refs.playlist.show()
+    },
     drop() {
       this.setFullScreen(false);
     },
@@ -307,6 +335,7 @@ export default {
     },
     ready() {
       this.songReady = true;
+      this.savePlayHistory(this.currentSong)
     },
     error() {
       this.songReady = true;
@@ -468,12 +497,18 @@ export default {
       setCurrentIndex: "SET_CURRENT_INDEX",
       setMode: "SET_MODE",
       setPlaylist: "SET_PLAYLIST"
-    })
+    }),
+    ...mapActions([
+      'savePlayHistory',
+      'saveFavoriteList',
+      'deleteFavoriteList'
+    ])
   },
   components: {
     ProgressBar,
     ProgressCircle,
-    Scroll
+    Scroll,
+    PlayList
   }
 };
 </script>
