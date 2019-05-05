@@ -17,20 +17,19 @@
 
 ## 效果图
 
-![](static/recommend.png)  
-![](static/recdetail.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/recommend.png)![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/recdetail.png)
 
-![](static/singer.png)
-![](static/singerdetail.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/singer.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/singerdetail.png)
 
-![](static/rank.png)
-![](static/rankdetail.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/rank.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/rankdetail.png)
 
-![](static/search.png)
-![](static/person.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/search.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/person.png)
 
-![](static/play.png)
-![](static/lyric.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/play.png)
+![image](https://github.com/sheerLi/Vue-MusicWebApp/blob/master/static/lyric.png)
 
 
 
