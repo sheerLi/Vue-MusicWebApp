@@ -35,7 +35,7 @@
                 <p
                   ref="lyricLine"
                   class="text"
-                  :class="{'current': currentLineNum ===index}"
+                  :class="{'current': currentLineNum === index}"
                   v-for="(line,index) in currentLyric.lines"
                   :key="index"
                 >{{line.txt}}</p>
@@ -179,11 +179,7 @@ export default {
         this.playingLyric = "";
         this.currentLineNum = 0;
       }
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        this.$refs.audio.play();
-        this.getLyric();
-      }, 1000);
+     
       this.$nextTick(() => {
         this.$refs.audio.play();
         this.getLyric();
@@ -447,14 +443,9 @@ export default {
         this.touch.moved = true;
       }
       const left = this.currentShow === "cd" ? 0 : -window.innerWidth;
-      const offsetWidth = Math.min(
-        0,
-        Math.max(-window.innerWidth, left + deltaX)
-      );
+      const offsetWidth = Math.min(0,Math.max(-window.innerWidth, left + deltaX));
       this.touch.percent = Math.abs(offsetWidth / window.innerWidth);
-      this.$refs.lyricList.$el.style[
-        transform
-      ] = `translate3d(${offsetWidth}px,0,0)`;
+      this.$refs.lyricList.$el.style[transform] = `translate3d(${offsetWidth}px,0,0)`;
       this.$refs.lyricList.$el.style[transitionDuration] = 0;
       this.$refs.middleL.style.opacity = 1 - this.touch.percent;
       this.$refs.middleL.style[transitionDuration] = 0;

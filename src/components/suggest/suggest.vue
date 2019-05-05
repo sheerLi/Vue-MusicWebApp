@@ -20,6 +20,7 @@
 <script>
 import {getSearchResult} from 'api/search'
 import {ERR_OK} from 'api/config'
+import {getSongVkey} from 'api/vkey'
 import {createSongList} from 'common/js/song'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
@@ -124,7 +125,10 @@ export default {
       let ret = []
       list.forEach((musicData) => {
         if(musicData.songid && musicData.albumid) {
-          ret.push(createSongList(musicData))
+          getSongVkey(musicData.songmid).then((res) => {
+            const songVkey = res.data.items[0].vkey
+            ret.push(createSongList(musicData, songVkey))
+          })
         }
       })
       return ret

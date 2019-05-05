@@ -26,12 +26,11 @@ export default class Song{
           reject('no lyric')
         }
       })
-    })
-    
+    })   
   }
 }
 
-export function createSongList(song){
+export function createSongList(song, vkey){
   return new Song({
     id: song.songid,
     songName: song.songname,
@@ -40,7 +39,7 @@ export function createSongList(song){
     album: song.albumname,
     duration: song.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${song.albummid}.jpg?max_age=2592000`,
-    url: `https://api.bzqll.com/music/tencent/url?id=${song.songmid}&key=579621905&br=320`
+    url: `http://dl.stream.qqmusic.qq.com/C400${song.songmid}.m4a?guid=5931742855&vkey=${vkey}&uin=0&fromtag=38`
   })
 }
 
