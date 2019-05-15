@@ -47,7 +47,8 @@ export default {
       list: [],
       pullup: true,
       beforeScroll: true,
-      hasMore: true
+      hasMore: true,
+
     }
   },
   methods: {
@@ -62,6 +63,7 @@ export default {
       getSearchResult(this.showSinger, this.page, this.query, perpage).then((res) => {
         if(res.code === ERR_OK) {
           this.list = this._genList(res.data)
+          
           this._checkMore(res.data)
         }
       })
@@ -74,7 +76,11 @@ export default {
       // this.showSinger = false
       getSearchResult(this.showSinger, this.page, this.query, perpage).then((res) => {
         if(res.code === ERR_OK) {
-          this.list = this.list.concat(this._genList(res.data))
+          let more = []
+          more = this._genList(res.data)
+          setTimeout(() => {
+            this.list = this.list.concat(more) 
+          }, 1000)        
           this._checkMore(res.data)
         }
       })
@@ -117,22 +123,22 @@ export default {
         ret.push({...data.zhida, ...{type: TYPE_SINGER}})
       }
       if(data.song){
-        ret = ret.concat(this._normalizeSongs(data.song.list))
-      }
-      return ret
+        let arr = this._normalizeSongs(data.song.list, ret)
+        return arr;     
+      }      
     },
-    _normalizeSongs(list) {
-      let ret = []
+    _normalizeSongs(list, singerList) {
+      // let ret = []
       list.forEach((musicData) => {
         if(musicData.songid && musicData.albumid) {
+          // ret.push(createSongList(musicData, '533405C31AFAFF3668CB644571BE91835C46563807D916EA28BD99B38F30F5112D6D7851695E39B457AFA495C77C8C8613A036ACBB834E6D'))
           getSongVkey(musicData.songmid).then((res) => {
             const songVkey = res.data.items[0].vkey
-            ret.push(createSongList(musicData, songVkey))
+            singerList.push(createSongList(musicData, songVkey))     
           })
         }
       })
-      return ret
-      console.log(ret)
+      return singerList
     },
     ...mapMutations({
       setSinger: 'SET_SINGER'

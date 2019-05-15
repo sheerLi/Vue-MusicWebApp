@@ -48,7 +48,11 @@ export default {
       this._triggerPercent();
     },
     progressTouchEnd() {
-      this.touch.initiated = false;    
+      // const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth;
+      // const percent = this.$refs.progress.clientWidth / barWidth;
+      // this.$emit("percentChangeEnd", percent);
+      this.touch.initiated = false;     
+      // this._triggerPercentEnd();  
     },
     progressClick(e) {
       const rect = this.$refs.progressBar.getBoundingClientRect();
@@ -58,6 +62,11 @@ export default {
       // this._offset(e.offsetX)
       this._triggerPercent();
     },
+    // _triggerPercentEnd() {
+    //   const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth;
+    //   const percent = this.$refs.progress.clientWidth / barWidth;
+    //   this.$emit("percentChangeEnd", percent);
+    // },
     _triggerPercent() {
       const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth;
       const percent = this.$refs.progress.clientWidth / barWidth;

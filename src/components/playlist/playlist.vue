@@ -195,7 +195,8 @@ export default {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: $color-dialog-background;
+    border-radius: 8px;
+    background-color: #f2f3f4;
     .list-header {
       position: relative;
       padding: 20px 30px 10px 20px;
@@ -209,7 +210,7 @@ export default {
         }
         .text {
           flex: 1;
-          font-size: $font-size-large;
+          font-size: $font-size-medium;
           color: $color-text-g;
         }
         .clear {
@@ -273,7 +274,7 @@ export default {
         display: flex;
         align-items: center;
         padding: 8px 16px;
-        border: 1px solid $color-text-l;
+        border: 1px solid #a9a0a0;
         border-radius: 100px;
         color: $color-text-g;
         .icon-add {
@@ -288,7 +289,7 @@ export default {
     .list-close {
       text-align: center;
       line-height: 50px;
-      background: $color-dialog-background;
+      background: #f1eded;
       font-size: $font-size-medium-x;
       color: $color-text-g;
     }

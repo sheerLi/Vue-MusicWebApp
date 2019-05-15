@@ -134,8 +134,8 @@ export default {
       .icon-back{
         display: block;
         padding: 10px;
-        font-size: $font-size-large-x;
-        color: $color-theme;
+        font-size: 30px;
+        color: #8d7c7a;
       }
     }
     .switches-wrapper{

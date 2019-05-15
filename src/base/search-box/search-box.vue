@@ -50,7 +50,6 @@ export default {
   box-sizing: border-box;
   width: 100%;
   height: 25px;
-  border-bottom: 1px solid rgb(235, 235, 235);
   .box {
     flex: 1;
     line-height: 25px;
@@ -63,10 +62,10 @@ export default {
       color: rgba(255, 255, 255, 0.6);
     }
   }
-  .icon-delete {
+  .icon-dismiss {
     position: absolute;
     right: 12px;
-    font-size: 24px;
+    font-size: 20px;
     color: rgba(255, 255, 255, 0.8);
     border: none;
   }

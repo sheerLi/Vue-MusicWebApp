@@ -35,7 +35,7 @@
     align-items: center;
     width: 240px;
     margin: 0 auto;
-    border: 1px solid $color-highlight-background;
+    border: 1px solid #e4d8d8;
     border-radius: 5px;
     .switch-item{
       flex: 1;
@@ -44,7 +44,7 @@
       font-size: $font-size-medium;
       color: $color-text-g;
       &.active{
-        background: $color-highlight-background;
+        background: #ddd;
         color: $color-text;
       }
     }

@@ -4,7 +4,7 @@
       <div class="header">
         <h1 class="title">添加歌曲到列表</h1>
         <div class="close" @click="hide">
-          <i class="icon-close"></i>
+          <i class="iconfont icon-dismiss"></i>
         </div>
       </div>
       <div class="search-box-wrapper">
@@ -148,11 +148,11 @@
         position: absolute;
         top: 0;
         right: 8px;
-        .icon-close{
+        .icon-dismiss{
           display: block;
           padding: 12px;
-          font-size: 20px;;
-          color: $color-theme;
+          font-size: 20px;
+          color: #959191;
         }
       }
     }

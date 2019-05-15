@@ -8,7 +8,7 @@
     </div>
     <div class="bg-img" :style="bgStyle" ref="bgImg">
       <div class="play-wrapper">
-        <div ref="playBtn" v-show="songs.length>0" class="play">
+        <div ref="playBtn" @click="random" v-show="songs.length>0" class="play">
           <i class="iconfont icon-stop icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
@@ -114,6 +114,11 @@ export default {
     this.$refs.list.$el.style.top = `${this.imageHeight}px`;
   },
   methods: {
+    random() {
+      this.randomPlay({
+          list: this.songs
+      })
+    },
     handlePlaylist(playlist) {
       const bottom = playlist.length > 0 ? '60px' : ''
       this.$refs.list.$el.style.bottom = bottom
@@ -132,7 +137,8 @@ export default {
       })
     },
     ...mapActions([
-      'selectPlay'
+      'selectPlay',
+      'randomPlay'
     ])
   },
   components: {
